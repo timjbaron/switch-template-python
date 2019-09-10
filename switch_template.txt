@@ -1,0 +1,59 @@
+#Switch Template
+#
+#Replace following variables with site specific info: 
+#
+#Description of Item 		- [variable name]
+#hostname 					- [hostname]
+#Branch number 				- [xx]
+#City Name 					- [name]
+#City-State 				- [location]
+#Switch 01 Serial Number 	- [serial_1]
+#Switch 02 Serial Number 	- [serial_2]
+#Port configuration if more than 2 switches 				- /*additional_swch_ports*/
+#Virtual Chassis configuration if more than two switches 	- /*additional_swch_vr_chas*/
+#
+# Load the following configuration on the switch core
+set system host-name [hostname]
+set system services dhcp-local-server group server1 interface irb.1
+set system services dhcp-local-server group server2 interface irb.2
+set system commit synchronize
+set chassis redundancy graceful-switchover
+set chassis alarm management-ethernet link-down ignore
+set interfaces interface-range access_ports member-range ge-0/0/1 to ge-0/0/47
+set interfaces interface-range access_ports member-range ge-1/0/0 to ge-1/0/47
+/*additional_swch_ports*/
+set interfaces interface-range access_ports unit 0 family ethernet-switching interface-mode access
+set interfaces interface-range access_ports unit 0 family ethernet-switching vlan members vlan1
+set interfaces ge-0/0/0 description "Uplink to RTR01"
+set interfaces ge-0/0/0 unit 0 family inet address 10.[xx].3.1/24
+set interfaces irb unit 1 description "Data Network"
+set interfaces irb unit 1 family inet address 10.[xx].1.1/24
+set interfaces irb unit 2 description "Voice Network"
+set interfaces irb unit 2 family inet address 10.[xx].2.1/24
+set interfaces lo0 unit 0 family inet address 10.[xx].255.3/32
+set snmp location "[location]"
+set routing-options nonstop-routing
+set protocols ospf area 0.0.0.0 interface ge-0/0/0.0
+set protocols ospf area 0.0.0.0 interface lo0.0 passive
+set protocols ospf area 0.0.0.0 interface irb.1 passive
+set protocols ospf area 0.0.0.0 interface irb.2 passive
+set access address-assignment pool pool1 family inet network 10.[xx].1.0/24
+set access address-assignment pool pool1 family inet range range1 low 10.[xx].1.20
+set access address-assignment pool pool1 family inet range range1 high 10.[xx].1.200
+set access address-assignment pool pool2 family inet network 10.[xx].2.0/24
+set access address-assignment pool pool2 family inet range range1 low 10.[xx].2.20
+set access address-assignment pool pool2 family inet range range1 high 10.[xx].2.200
+set switch-options voip interface access_ports vlan vlan2
+set switch-options voip interface access_ports forwarding-class expedited-forwarding
+set virtual-chassis preprovisioned
+set virtual-chassis member 0 role routing-engine
+set virtual-chassis member 0 serial-number [serial_1]
+set virtual-chassis member 1 role routing-engine
+set virtual-chassis member 1 serial-number [serial_2]
+/*additional_swch_vr_chas*/
+set vlans vlan1 description "Data Vlan"
+set vlans vlan1 vlan-id 1
+set vlans vlan1 l3-interface irb.1
+set vlans vlan2 description "Voice Vlan"
+set vlans vlan2 vlan-id 2
+set vlans vlan2 l3-interface irb.2
