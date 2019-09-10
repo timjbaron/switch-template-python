@@ -9,7 +9,7 @@ t.close()
 print('What is the hostname of the device?')
 hostname = input()
 
-print('What is the branch IP number? Example: type 28 for 10.28.10.1')
+print('What is the branch IP number? Example: type 28 for 10.28.1.0/24')
 ipxx = input()
 
 print('What City is the branch in? Example: Paris')
