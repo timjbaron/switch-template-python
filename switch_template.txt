@@ -1,15 +1,13 @@
 #Switch Template
 #
-#Replace following variables with site specific info: 
-#
-#Description of Item 		- [variable name]
-#hostname 					- [hostname]
-#Branch number 				- [xx]
-#City Name 					- [name]
-#City-State 				- [location]
+#Description of Item 		  - [variable name]
+#hostname 					      - [hostname]
+#Branch number 				    - [xx]
+#City Name 					      - [name]
+#City-State 				      - [location]
 #Switch 01 Serial Number 	- [serial_1]
 #Switch 02 Serial Number 	- [serial_2]
-#Port configuration if more than 2 switches 				- /*additional_swch_ports*/
+#Port configuration if more than 2 switches 				      - /*additional_swch_ports*/
 #Virtual Chassis configuration if more than two switches 	- /*additional_swch_vr_chas*/
 #
 # Load the following configuration on the switch core
